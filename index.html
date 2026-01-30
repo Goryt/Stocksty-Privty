@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#0f172a">
+    <meta name="description" content="UMKM Dashboard - Sistem Kasir dan Manajemen Bisnis Modern">
+    <title>UMKM Dashboard - Kasir & Manajemen Bisnis</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <!-- Sidebar Navigation -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <h3><i class="bi bi-shop"></i> UMKM Dashboard</h3>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="#" class="nav-link active" data-section="dashboard"><i class="bi bi-speedometer2"></i> Dashboard</a></li>
+            <li><a href="#" class="nav-link" data-section="pos"><i class="bi bi-calculator"></i> Kasir POS</a></li>
+            <li><a href="#" class="nav-link" data-section="products"><i class="bi bi-box-seam"></i> Manajemen Produk</a></li>
+            <li><a href="#" class="nav-link" data-section="finance"><i class="bi bi-graph-up"></i> Keuangan</a></li>
+            <li><a href="#" class="nav-link" data-section="inventory"><i class="bi bi-archive"></i> Inventory</a></li>
+            <li><a href="#" class="nav-link" data-section="ai-tools"><i class="bi bi-robot"></i> AI Tools</a></li>
+            <li><a href="#" class="nav-link" data-section="reports"><i class="bi bi-file-earmark-text"></i> Laporan</a></li>
+            <li><a href="#" class="nav-link" data-section="business-ideas"><i class="bi bi-lightbulb"></i> Ide Bisnis</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Header -->
+        <header class="header">
+            <div class="header-left">
+                <button class="btn btn-outline-primary btn-sm" id="sidebarToggle">
+                    <i class="bi bi-list fs-5"></i>
+                </button>
+                <h1 id="pageTitle" class="text-gradient">Dashboard</h1>
+            </div>
+            <div class="header-right">
+                <div class="d-flex align-items-center gap-3">
+                    <button class="btn btn-outline-info btn-sm" onclick="showQuickSearch()" title="Cari Cepat (Ctrl+K)">
+                        <i class="bi bi-search"></i>
+                    </button>
+                    <div class="datetime" id="currentDateTime">
+                        <i class="bi bi-clock me-2"></i><span></span>
+                    </div>
+                    <button class="btn btn-outline-secondary btn-sm" id="settingsBtn" title="Pengaturan">
+                        <i class="bi bi-gear"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Content Area -->
+        <div class="content-area" id="contentArea">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="content-section active">
+                <!-- Stats Row -->
+                <div class="row g-4 mb-4">
+                    <!-- Penjualan Hari Ini -->
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card stat-card h-100">
+                            <div class="card-body">
+                                <div class="stat-icon bg-primary">
+                                    <i class="bi bi-wallet2"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <p class="stat-title">Penjualan Hari Ini</p>
+                                    <h3 class="stat-value" id="todaySales">Rp 0</h3>
+                                    <span class="stat-change text-success">
+                                        <i class="bi bi-arrow-up-short"></i> <span id="todaySalesChange">+0%</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Omset Bulanan -->
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card stat-card h-100">
+                            <div class="card-body">
+                                <div class="stat-icon bg-success">
+                                    <i class="bi bi-graph-up-arrow"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <p class="stat-title">Omset Bulanan</p>
+                                    <h3 class="stat-value" id="monthlyRevenue">Rp 0</h3>
+                                    <span class="stat-change text-success">
+                                        <i class="bi bi-arrow-up-short"></i> <span id="monthlyRevenueChange">+0%</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Total Transaksi -->
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card stat-card h-100">
+                            <div class="card-body">
+                                <div class="stat-icon bg-warning">
+                                    <i class="bi bi-cart3"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <p class="stat-title">Total Transaksi</p>
+                                    <h3 class="stat-value" id="totalTransactions">0</h3>
+                                    <span class="stat-change text-success">
+                                        <i class="bi bi-arrow-up-short"></i> <span id="transactionsChange">+0</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Margin Profit -->
+                    <div class="col-xl-3 col-md-6">
+                        <div class="card stat-card h-100">
+                            <div class="card-body">
+                                <div class="stat-icon bg-info">
+                                    <i class="bi bi-pie-chart"></i>
+                                </div>
+                                <div class="stat-content">
+                                    <p class="stat-title">Margin Profit</p>
+                                    <h3 class="stat-value" id="profitMargin">0%</h3>
+                                    <span class="stat-change text-success">
+                                        <i class="bi bi-arrow-up-short"></i> <span id="profitMarginChange">+0%</span>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Target Progress (Hidden by default) -->
+                <div class="row g-4 mb-4" id="salesTargetDisplay" style="display: none;">
+                    <div class="col-12">
+                        <div class="card stat-card">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div>
+                                        <p class="stat-title mb-1">Target Bulanan</p>
+                                        <h3 class="stat-value mb-0" id="targetPercentage">0%</h3>
+                                    </div>
+                                    <div class="stat-icon bg-info">
+                                        <i class="bi bi-bullseye"></i>
+                                    </div>
+                                </div>
+                                <div class="progress mb-2" style="height: 10px;">
+                                    <div class="progress-bar" id="targetProgressBar" style="width: 0%"></div>
+                                </div>
+                                <p class="text-muted mb-0">
+                                    <span id="currentSales">Rp 0</span> / <span id="targetSales">Rp 0</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Charts -->
+                <div class="row g-4 mb-4">
+                    <div class="col-lg-8">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h5><i class="bi bi-graph-up me-2"></i>Grafik Penjualan</h5>
+                                <div class="card-tools">
+                                    <select class="form-select form-select-sm" id="salesPeriod" style="min-width: 150px;">
+                                        <option value="7">7 Hari Terakhir</option>
+                                        <option value="30">30 Hari Terakhir</option>
+                                        <option value="90">90 Hari Terakhir</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="salesChart" height="280"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card h-100">
+                            <div class="card-header">
+                                <h5><i class="bi bi-trophy me-2"></i>Produk Terlaris</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="topProductsChart" height="280"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Quick Actions -->
+                <div class="row g-4">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5><i class="bi bi-lightning-charge me-2"></i>Aksi Cepat</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="row g-3">
+                                    <div class="col-md-3 col-sm-6">
+                                        <button class="btn btn-primary w-100" onclick="showSection('pos')">
+                                            <i class="bi bi-calculator fs-4 mb-2 d-block"></i>
+                                            Buka Kasir
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <button class="btn btn-success w-100" onclick="showSection('products')">
+                                            <i class="bi bi-plus-circle fs-4 mb-2 d-block"></i>
+                                            Tambah Produk
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <button class="btn btn-info w-100" onclick="showSection('ai-tools')">
+                                            <i class="bi bi-robot fs-4 mb-2 d-block"></i>
+                                            AI Assistant
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6">
+                                        <button class="btn btn-warning w-100" onclick="showSection('business-ideas')">
+                                            <i class="bi bi-lightbulb fs-4 mb-2 d-block"></i>
+                                            Ide Bisnis
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- POS Section -->
+            <section id="pos" class="content-section">
+                <div class="row">
+                    <div class="col-lg-8">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Daftar Produk</h5>
+                                <div class="card-tools">
+                                    <input type="text" class="form-control" id="productSearch" placeholder="Cari produk...">
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row" id="productList">
+                                    <!-- Products will be loaded here -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Keranjang Belanja</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="cartItems">
+                                    <p class="text-muted">Keranjang kosong</p>
+                                </div>
+                                <div class="cart-total" id="cartTotal" style="display: none;">
+                                    <hr>
+                                    <div class="d-flex justify-content-between">
+                                        <strong>Total:</strong>
+                                        <strong id="totalAmount">Rp 0</strong>
+                                    </div>
+                                    <button class="btn btn-success w-100 mt-3" onclick="processPayment()">
+                                        <i class="bi bi-cash-stack"></i> Proses Pembayaran
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Products Management Section -->
+            <section id="products" class="content-section">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Manajemen Produk</h5>
+                                <button class="btn btn-primary" onclick="showProductModal()">
+                                    <i class="bi bi-plus"></i> Tambah Produk
+                                </button>
+                            </div>
+                            <div class="card-body">
+                                <div class="table-responsive">
+                                    <table class="table table-striped" id="productsTable">
+                                        <thead>
+                                            <tr>
+                                                <th>ID</th>
+                                                <th>Nama Produk</th>
+                                                <th>Kategori</th>
+                                                <th>Harga Jual</th>
+                                                <th>HPP</th>
+                                                <th>Stok</th>
+                                                <th>Margin</th>
+                                                <th>Aksi</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="productsTableBody">
+                                            <!-- Products data will be loaded here -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- AI Tools Section -->
+            <section id="ai-tools" class="content-section">
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="card ai-tool-card">
+                            <div class="card-body text-center">
+                                <i class="bi bi-calculator tool-icon bg-primary"></i>
+                                <h5 class="text-primary">Kalkulator HPP & Margin</h5>
+                                <p class="text-white">Hitung otomatis Harga Pokok Produksi dan margin keuntungan</p>
+                                <button class="btn btn-primary" onclick="showHPPCalculator()">Gunakan Tool</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="card ai-tool-card">
+                            <div class="card-body text-center">
+                                <i class="bi bi-lightbulb tool-icon bg-success"></i>
+                                <h5 class="text-success">AI Rekomendasi Ide Jualan</h5>
+                                <p class="text-white">Dapatkan ide-ide bisnis potensial berdasarkan tren dan lokasi</p>
+                                <button class="btn btn-success" onclick="showBusinessIdeasAI()">Dapatkan Ide</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="card ai-tool-card">
+                            <div class="card-body text-center">
+                                <i class="bi bi-youtube tool-icon bg-danger"></i>
+                                <h5 class="text-danger">Rekomendasi Resep dari YouTube</h5>
+                                <p class="text-white">Temukan resep makanan populer untuk ide bisnis kuliner</p>
+                                <button class="btn btn-danger" onclick="showRecipeRecommendations()">Cari Resep</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="card ai-tool-card">
+                            <div class="card-body text-center">
+                                <i class="bi bi-graph-up tool-icon bg-warning"></i>
+                                <h5 class="text-warning">Analisis Pasar & Tren</h5>
+                                <p class="text-white">Analisis tren pasar dan prediksi permintaan produk</p>
+                                <button class="btn btn-warning" onclick="showMarketAnalysis()">Analisis Pasar</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Finance Section -->
+            <section id="finance" class="content-section">
+                <!-- Financial Summary Cards -->
+                <div class="row mb-4">
+                    <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                        <div class="card stat-card">
+                            <div class="card-body text-center">
+                                <div class="stat-icon bg-success mx-auto mb-2">
+                                    <i class="bi bi-cash-stack"></i>
+                                </div>
+                                <h5 class="stat-title">Pendapatan Bulanan</h5>
+                                <h3 class="stat-value" id="monthlyRevenueSummary">Rp 0</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                        <div class="card stat-card">
+                            <div class="card-body text-center">
+                                <div class="stat-icon bg-primary mx-auto mb-2">
+                                    <i class="bi bi-graph-up"></i>
+                                </div>
+                                <h5 class="stat-title">Profit Bulanan</h5>
+                                <h3 class="stat-value" id="monthlyProfitSummary">Rp 0</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                        <div class="card stat-card">
+                            <div class="card-body text-center">
+                                <div class="stat-icon bg-danger mx-auto mb-2">
+                                    <i class="bi bi-arrow-down-circle"></i>
+                                </div>
+                                <h5 class="stat-title">Pengeluaran</h5>
+                                <h3 class="stat-value" id="monthlyExpensesSummary">Rp 0</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                        <div class="card stat-card">
+                            <div class="card-body text-center">
+                                <div class="stat-icon bg-warning mx-auto mb-2">
+                                    <i class="bi bi-percent"></i>
+                                </div>
+                                <h5 class="stat-title">Margin Profit</h5>
+                                <h3 class="stat-value" id="profitMarginSummary">0%</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                        <div class="card stat-card">
+                            <div class="card-body text-center">
+                                <div class="stat-icon bg-info mx-auto mb-2">
+                                    <i class="bi bi-cart-check"></i>
+                                </div>
+                                <h5 class="stat-title">Transaksi</h5>
+                                <h3 class="stat-value" id="transactionCountSummary">0</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-2 col-md-4 col-sm-6 mb-3">
+                        <div class="card stat-card">
+                            <div class="card-body text-center">
+                                <div class="stat-icon bg-secondary mx-auto mb-2">
+                                    <i class="bi bi-calculator"></i>
+                                </div>
+                                <h5 class="stat-title">Rata-rata Transaksi</h5>
+                                <h3 class="stat-value" id="averageTransactionSummary">Rp 0</h3>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Finance Charts -->
+                <div class="row">
+                    <div class="col-lg-8 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Grafik Keuangan</h5>
+                                <div class="card-tools">
+                                    <select class="form-select form-select-sm" id="financePeriod">
+                                        <option value="daily">Harian</option>
+                                        <option value="weekly">Mingguan</option>
+                                        <option value="monthly">Bulanan</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="financeChart" height="300"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Profit & Loss</h5>
+                            </div>
+                            <div class="card-body">
+                                <canvas id="profitLossChart" height="300"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Financial Reports -->
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Laporan Keuangan</h5>
+                                <div class="card-tools">
+                                    <select class="form-select form-select-sm me-2" id="reportType">
+                                        <option value="summary">Ringkasan</option>
+                                        <option value="detailed">Detail</option>
+                                        <option value="profit_loss">Profit & Loss</option>
+                                        <option value="cash_flow">Arus Kas</option>
+                                    </select>
+                                    <button class="btn btn-outline-primary btn-sm" id="exportFinanceBtn">
+                                        <i class="bi bi-download"></i> Export
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div id="financialReports">
+                                    <p class="text-muted">Memuat laporan keuangan...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Inventory Section -->
+            <section id="inventory" class="content-section">
+                <div class="row">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Manajemen Inventory</h5>
+                                <div class="card-tools">
+                                    <button class="btn btn-outline-success btn-sm" onclick="initializeInventory()">
+                                        <i class="bi bi-arrow-clockwise"></i> Refresh
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div id="inventoryList">
+                                    <p class="text-muted">Memuat data inventory...</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Reports Section -->
+            <section id="reports" class="content-section">
+                <div class="row">
+                    <div class="col-lg-8 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Laporan & Analisis</h5>
+                                <div class="card-tools">
+                                    <button class="btn btn-outline-primary btn-sm" onclick="generateCompleteReport()">
+                                        <i class="bi bi-file-earmark-text"></i> Generate Laporan Lengkap
+                                    </button>
+                                    <button class="btn btn-outline-success btn-sm" onclick="exportCompleteReport()">
+                                        <i class="bi bi-download"></i> Export PDF
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <div class="card bg-primary text-white">
+                                            <div class="card-body text-center">
+                                                <i class="bi bi-graph-up-arrow fs-1 mb-2"></i>
+                                                <h5>Penjualan</h5>
+                                                <h3 id="totalSalesReport">Rp 0</h3>
+                                                <small>Total penjualan bulan ini</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <div class="card bg-success text-white">
+                                            <div class="card-body text-center">
+                                                <i class="bi bi-percent fs-1 mb-2"></i>
+                                                <h5>Performa</h5>
+                                                <h3 id="performanceReport">0%</h3>
+                                                <small>Pertumbuhan vs bulan lalu</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="table-responsive">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Kategori</th>
+                                                <th>Penjualan</th>
+                                                <th>Pertumbuhan</th>
+                                                <th>Status</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="reportTableBody">
+                                            <tr>
+                                                <td colspan="4" class="text-center text-muted">Memuat data laporan...</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Insight Bisnis</h5>
+                            </div>
+                            <div class="card-body">
+                                <div id="businessInsights">
+                                    <div class="insight-item mb-3">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <i class="bi bi-lightbulb text-warning me-2"></i>
+                                            <strong>Tren Produk</strong>
+                                        </div>
+                                        <p class="small text-muted">Produk dengan penjualan tertinggi bulan ini:</p>
+                                        <div id="topProductsInsight">
+                                            <p class="text-muted">Memuat...</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="insight-item mb-3">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <i class="bi bi-graph-up text-success me-2"></i>
+                                            <strong>Peluang</strong>
+                                        </div>
+                                        <p class="small text-muted">Kategori produk yang meningkat:</p>
+                                        <div id="opportunitiesInsight">
+                                            <p class="text-muted">Memuat...</p>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="insight-item">
+                                        <div class="d-flex align-items-center mb-2">
+                                            <i class="bi bi-exclamation-triangle text-warning me-2"></i>
+                                            <strong>Perhatian</strong>
+                                        </div>
+                                        <p class="small text-muted">Area yang perlu perhatian:</p>
+                                        <div id="warningsInsight">
+                                            <p class="text-muted">Memuat...</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Business Ideas Section -->
+            <section id="business-ideas" class="content-section">
+                <div class="row">
+                    <div class="col-lg-8 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Ide-ide Bisnis Potensial</h5>
+                                <div class="card-tools">
+                                    <button class="btn btn-outline-primary btn-sm" onclick="refreshBusinessIdeas()">
+                                        <i class="bi bi-arrow-clockwise"></i> Refresh
+                                    </button>
+                                </div>
+                            </div>
+                            <div class="card-body">
+                                <div class="row" id="businessIdeasContainer">
+                                    <div class="col-12 text-center">
+                                        <i class="bi bi-lightbulb text-warning" style="font-size: 3rem;"></i>
+                                        <p class="text-muted mt-2">Memuat ide-ide bisnis potensial...</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 mb-4">
+                        <div class="card">
+                            <div class="card-header">
+                                <h5>Kategori Bisnis</h5>
+                            </div>
+                            <div class="card-body">
+                                <div class="business-categories">
+                                    <div class="category-item mb-3 p-3 bg-light rounded cursor-pointer" onclick="filterBusinessIdeas('makanan')">
+                                        <div class="d-flex align-items-center">
+                                            <i class="bi bi-egg-fried text-danger fs-3 me-3"></i>
+                                            <div>
+                                                <h6 class="mb-1">Makanan</h6>
+                                                <small class="text-muted">Ide bisnis kuliner dan makanan</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="category-item mb-3 p-3 bg-light rounded cursor-pointer" onclick="filterBusinessIdeas('minuman')">
+                                        <div class="d-flex align-items-center">
+                                            <i class="bi bi-cup-straw text-primary fs-3 me-3"></i>
+                                            <div>
+                                                <h6 class="mb-1">Minuman</h6>
+                                                <small class="text-muted">Ide bisnis minuman segar</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="category-item mb-3 p-3 bg-light rounded cursor-pointer" onclick="filterBusinessIdeas('snack')">
+                                        <div class="d-flex align-items-center">
+                                            <i class="bi bi-cookie text-warning fs-3 me-3"></i>
+                                            <div>
+                                                <h6 class="mb-1">Snack & Jajanan</h6>
+                                                <small class="text-muted">Ide bisnis camilan dan jajanan</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="category-item mb-3 p-3 bg-light rounded cursor-pointer" onclick="filterBusinessIdeas('jasa')">
+                                        <div class="d-flex align-items-center">
+                                            <i class="bi bi-people text-info fs-3 me-3"></i>
+                                            <div>
+                                                <h6 class="mb-1">Jasa & Layanan</h6>
+                                                <small class="text-muted">Ide bisnis berbasis jasa</small>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <button class="btn btn-primary w-100 mt-3" onclick="showBusinessIdeasAI()">
+                                    <i class="bi bi-robot"></i> AI Rekomendasi
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Product Modal -->
+    <div class="modal fade" id="productModal" tabindex="-1">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="productModalTitle">Tambah Produk Baru</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="productForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Nama Produk</label>
+                                    <input type="text" class="form-control" id="productName" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label class="form-label">Kategori</label>
+                                    <select class="form-select" id="productCategory" required>
+                                        <option value="">Pilih Kategori</option>
+                                        <option value="makanan">Makanan</option>
+                                        <option value="minuman">Minuman</option>
+                                        <option value="snack">Snack</option>
+                                        <option value="sembako">Sembako</option>
+                                        <option value="lainnya">Lainnya</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Harga Jual</label>
+                                    <input type="number" class="form-control" id="productPrice" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">HPP (Harga Pokok)</label>
+                                    <input type="number" class="form-control" id="productHPP" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mb-3">
+                                    <label class="form-label">Stok</label>
+                                    <input type="number" class="form-control" id="productStock" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="mb-3">
+                                    <label class="form-label">Deskripsi</label>
+                                    <textarea class="form-control" id="productDescription" rows="3"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+                    <button type="button" class="btn btn-primary" onclick="saveProduct()">Simpan Produk</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script src="js/app.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/pos.js"></script>
+    <script src="js/products.js"></script>
+    <script src="js/features.js"></script>
+    <script src="js/reports.js"></script>
+    <script src="js/finance.js"></script>
+    <script src="js/ai-tools.js"></script>
+</body>
+</html>
